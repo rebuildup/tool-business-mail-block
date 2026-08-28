@@ -1,1 +1,7 @@
-export default function BusinessMailBlockApp() { return <div>BusinessMailBlock placeholder</div>; }
+"use client";
+
+import BusinessMailBlockTool from "./components/BusinessMailBlockTool";
+
+export default function BusinessMailBlockApp() {
+	return <BusinessMailBlockTool />;
+}
