@@ -1,5 +1,22 @@
 node_modules/
 .next/
+out/
 dist/
+build/
+.tmp/
+.reference/
+
+# env: actual values
+.env
+.env.development
+.env.production
+
+# env: example files stay tracked
+!.env.example
+!.env.development.example
+!.env.production.example
+
+.DS_Store
 .vscode/
+.idea/
 *.log
