@@ -1,7 +1,7 @@
 "use client";
 
 import { DragDropContext } from "@hello-pangea/dnd";
-import ToolWrapper from "../../../../external/ui/src/ToolWrapper";
+import ToolWrapper from "../../../../src/components/tools-ui/ToolWrapper";
 import AvailableBlocks from "./AvailableBlocks";
 import ComposedBlocks from "./ComposedBlocks";
 import Controls from "./Controls";
