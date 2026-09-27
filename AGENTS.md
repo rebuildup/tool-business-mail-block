@@ -88,3 +88,10 @@ fresh clone から `git submodule update --init --recursive && bun install --fro
 ## 14. 既知の quality debt (2026-08 監査時点)
 
 `docs/adr/0001-tool-embedding-contract.md` 末尾を参照.
+
+## Constitution / operating profile
+
+- 最上位 contract: [`constitution/CONSTITUTION.md`](constitution/CONSTITUTION.md)
+- current Operating Model: [`organization/profiles/release-driven-solo.md`](organization/profiles/release-driven-solo.md)
+- 既存のhost/submodule/validation境界は、Constitution と両立する限り generic upstream Practice より具体的な authority として維持する。
+- project-init operational Skills は `bunx skills` + `skills-lock.json` で継続更新する。
