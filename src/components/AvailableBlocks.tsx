@@ -55,6 +55,12 @@ export default function AvailableBlocks({
 											CATEGORY_COLORS[block.category]
 										} ${snapshot.isDragging ? "" : ""}`}
 										style={{
+											// `draggableProps.style` carries the lift geometry
+											// (position / transform / top / left). Spreading it
+											// FIRST keeps that geometry; a plain style object
+											// replaced it, so the card never visually lifted and
+											// the drop animation never completed.
+											...provided.draggableProps.style,
 											padding: "0.75rem",
 											borderRadius: "0.5rem",
 											cursor: "move",
