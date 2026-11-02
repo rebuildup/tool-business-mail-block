@@ -23,6 +23,12 @@ export default function GeneratedEmail({
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "space-between",
+					// At 390px the heading plus three buttons do not fit on one
+					// row: without wrapping, each button label broke one
+					// character per line (「コ / ピ / ー」). Let the action group
+					// move below the heading as whole buttons instead.
+					flexWrap: "wrap",
+					rowGap: "0.5rem",
 				}}
 			>
 				<h3
@@ -37,7 +43,15 @@ export default function GeneratedEmail({
 				>
 					生成されたメール
 				</h3>
-				<div className="flex gap-2" style={{ display: "flex", gap: "0.5rem" }}>
+				<div
+					className="flex gap-2"
+					style={{
+						display: "flex",
+						gap: "0.5rem",
+						flexWrap: "wrap",
+						rowGap: "0.5rem",
+					}}
+				>
 					<button
 						type="button"
 						onClick={copyToClipboard}
@@ -51,6 +65,7 @@ export default function GeneratedEmail({
 							display: "flex",
 							alignItems: "center",
 							gap: "0.5rem",
+							whiteSpace: "nowrap",
 							fontFamily:
 								'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 							fontWeight: 400,
@@ -75,6 +90,7 @@ export default function GeneratedEmail({
 							display: "flex",
 							alignItems: "center",
 							gap: "0.5rem",
+							whiteSpace: "nowrap",
 							fontFamily:
 								'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 							fontWeight: 400,
@@ -99,6 +115,7 @@ export default function GeneratedEmail({
 							display: "flex",
 							alignItems: "center",
 							gap: "0.5rem",
+							whiteSpace: "nowrap",
 							fontFamily:
 								'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 							fontWeight: 400,
