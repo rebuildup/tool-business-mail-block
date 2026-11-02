@@ -10,17 +10,49 @@ export default function EmailValidation({
 }: EmailValidationProps) {
 	return (
 		<div className="space-y-4">
-			<h3 className="neue-haas-grotesk-display text-lg ">
+			<h3
+				className="neue-haas-grotesk-display text-lg "
+				style={{
+					fontFamily:
+						'"Helvetica Neue", "Arial Nova", "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+					fontWeight: 700,
+					fontSize: "1.125rem",
+					lineHeight: 1.5555555555555556,
+				}}
+			>
 				メールバリデーション
 			</h3>
 
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+			<div
+				className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+				style={{ display: "grid", gap: "1rem" }}
+			>
 				{/* Errors */}
 				{validationResult.errors.length > 0 && (
-					<div className="   p-3">
-						<div className="flex items-center gap-2 mb-2">
-							<AlertCircle className="w-4 h-4 " />
-							<h4 className="text-sm neue-haas-grotesk-display ">
+					<div className="   p-3" style={{ padding: "0.75rem" }}>
+						<div
+							className="flex items-center gap-2 mb-2"
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								marginBottom: "0.5rem",
+							}}
+						>
+							<AlertCircle
+								className="w-4 h-4 "
+								style={{ width: "1rem", height: "1rem" }}
+							/>
+							<h4
+								className="text-sm neue-haas-grotesk-display "
+								style={{
+									fontSize: "0.875rem",
+									lineHeight: 1.4285714285714286,
+									fontFamily:
+										'"Helvetica Neue", "Arial Nova", "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+									fontWeight: 700,
+								}}
+							>
 								エラー ({validationResult.errors.length})
 							</h4>
 						</div>
@@ -29,6 +61,13 @@ export default function EmailValidation({
 								<li
 									key={`error-${error}`}
 									className="text-xs  noto-sans-jp-light"
+									style={{
+										fontSize: "0.75rem",
+										lineHeight: 1.3333333333333333,
+										fontFamily:
+											'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+										fontWeight: 300,
+									}}
 								>
 									• {error}
 								</li>
@@ -39,10 +78,30 @@ export default function EmailValidation({
 
 				{/* Warnings */}
 				{validationResult.warnings.length > 0 && (
-					<div className="   p-3">
-						<div className="flex items-center gap-2 mb-2">
-							<AlertCircle className="w-4 h-4 " />
-							<h4 className="text-sm neue-haas-grotesk-display ">
+					<div className="   p-3" style={{ padding: "0.75rem" }}>
+						<div
+							className="flex items-center gap-2 mb-2"
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								marginBottom: "0.5rem",
+							}}
+						>
+							<AlertCircle
+								className="w-4 h-4 "
+								style={{ width: "1rem", height: "1rem" }}
+							/>
+							<h4
+								className="text-sm neue-haas-grotesk-display "
+								style={{
+									fontSize: "0.875rem",
+									lineHeight: 1.4285714285714286,
+									fontFamily:
+										'"Helvetica Neue", "Arial Nova", "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+									fontWeight: 700,
+								}}
+							>
 								警告 ({validationResult.warnings.length})
 							</h4>
 						</div>
@@ -51,6 +110,13 @@ export default function EmailValidation({
 								<li
 									key={`warning-${warning}`}
 									className="text-xs  noto-sans-jp-light"
+									style={{
+										fontSize: "0.75rem",
+										lineHeight: 1.3333333333333333,
+										fontFamily:
+											'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+										fontWeight: 300,
+									}}
 								>
 									• {warning}
 								</li>
@@ -61,10 +127,30 @@ export default function EmailValidation({
 
 				{/* Suggestions */}
 				{validationResult.suggestions.length > 0 && (
-					<div className="   p-3">
-						<div className="flex items-center gap-2 mb-2">
-							<CheckCircle className="w-4 h-4 " />
-							<h4 className="text-sm neue-haas-grotesk-display ">
+					<div className="   p-3" style={{ padding: "0.75rem" }}>
+						<div
+							className="flex items-center gap-2 mb-2"
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								marginBottom: "0.5rem",
+							}}
+						>
+							<CheckCircle
+								className="w-4 h-4 "
+								style={{ width: "1rem", height: "1rem" }}
+							/>
+							<h4
+								className="text-sm neue-haas-grotesk-display "
+								style={{
+									fontSize: "0.875rem",
+									lineHeight: 1.4285714285714286,
+									fontFamily:
+										'"Helvetica Neue", "Arial Nova", "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+									fontWeight: 700,
+								}}
+							>
 								提案 ({validationResult.suggestions.length})
 							</h4>
 						</div>
@@ -73,6 +159,13 @@ export default function EmailValidation({
 								<li
 									key={`suggestion-${suggestion}`}
 									className="text-xs  noto-sans-jp-light"
+									style={{
+										fontSize: "0.75rem",
+										lineHeight: 1.3333333333333333,
+										fontFamily:
+											'"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+										fontWeight: 300,
+									}}
 								>
 									• {suggestion}
 								</li>
@@ -85,10 +178,25 @@ export default function EmailValidation({
 				{validationResult.isValid &&
 					validationResult.warnings.length === 0 &&
 					validationResult.suggestions.length === 0 && (
-						<div className="   p-3">
-							<div className="flex items-center gap-2">
-								<CheckCircle className="w-4 h-4 " />
-								<h4 className="text-sm neue-haas-grotesk-display ">
+						<div className="   p-3" style={{ padding: "0.75rem" }}>
+							<div
+								className="flex items-center gap-2"
+								style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+							>
+								<CheckCircle
+									className="w-4 h-4 "
+									style={{ width: "1rem", height: "1rem" }}
+								/>
+								<h4
+									className="text-sm neue-haas-grotesk-display "
+									style={{
+										fontSize: "0.875rem",
+										lineHeight: 1.4285714285714286,
+										fontFamily:
+											'"Helvetica Neue", "Arial Nova", "Hiragino Kaku Gothic ProN", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
+										fontWeight: 700,
+									}}
+								>
 									メールは適切に構成されています
 								</h4>
 							</div>

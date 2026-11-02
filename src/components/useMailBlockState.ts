@@ -56,6 +56,9 @@ export interface UseMailBlockState {
 		category: MailTemplate["category"],
 	) => string;
 	saveAsTemplateFromUI: () => void;
+	showTemplateSaveForm: boolean;
+	setShowTemplateSaveForm: (value: boolean) => void;
+	confirmSaveTemplate: (name: string, description: string) => void;
 	deleteTemplate: (templateId: string) => void;
 	addCustomBlock: () => void;
 	exportTemplate: (templateId: string) => void;
@@ -88,6 +91,7 @@ export function useMailBlockState(): UseMailBlockState {
 		"greeting" | "body" | "closing" | "signature"
 	>("body");
 	const [showCustomBlockForm, setShowCustomBlockForm] = useState(false);
+	const [showTemplateSaveForm, setShowTemplateSaveForm] = useState(false);
 
 	// Filter available blocks
 	const filteredBlocks = availableBlocks.filter((block) => {
@@ -195,10 +199,33 @@ export function useMailBlockState(): UseMailBlockState {
 
 	// Copy to clipboard
 	const copyToClipboard = useCallback(async () => {
+		// Inside an opaque-origin sandbox frame `navigator.clipboard` is
+		// missing (or its write is rejected by the permissions policy), so
+		// the deprecated `execCommand` path is the fallback that keeps the
+		// feature working inside the host's Tool frame.
 		try {
 			await navigator.clipboard.writeText(generatedEmail);
+			return;
+		} catch {
+			// Fall through to the `execCommand` fallback.
+		}
+
+		const textarea = document.createElement("textarea");
+		textarea.value = generatedEmail;
+		textarea.setAttribute("readonly", "");
+		textarea.style.position = "fixed";
+		textarea.style.opacity = "0";
+		document.body.appendChild(textarea);
+		textarea.select();
+		let copied = false;
+		try {
+			copied = document.execCommand("copy");
 		} catch (error) {
 			console.error("Failed to copy to clipboard:", error);
+		}
+		textarea.remove();
+		if (!copied) {
+			console.error("Failed to copy to clipboard: no fallback available.");
 		}
 	}, [generatedEmail]);
 
@@ -257,14 +284,23 @@ export function useMailBlockState(): UseMailBlockState {
 		[composedBlocks, variables],
 	);
 
-	// Save handler triggered from the UI (prompts for name + description)
+	// Save handler triggered from the UI: opens the inline save form.
+	// `window.prompt()` is not usable here — a sandboxed iframe without
+	// `allow-modals` blocks the dialog and returns `null`, which is
+	// indistinguishable from a user cancel, so the save silently did
+	// nothing inside the host's Tool frame.
 	const saveAsTemplateFromUI = useCallback(() => {
-		const name = prompt("テンプレート名を入力してください:");
-		if (name) {
-			const description = prompt("テンプレートの説明を入力してください:") || "";
+		setShowTemplateSaveForm(true);
+	}, []);
+
+	// Save handler for the inline save form.
+	const confirmSaveTemplate = useCallback(
+		(name: string, description: string) => {
 			saveAsTemplate(name, description, "custom");
-		}
-	}, [saveAsTemplate]);
+			setShowTemplateSaveForm(false);
+		},
+		[saveAsTemplate],
+	);
 
 	// Delete custom template
 	const deleteTemplate = useCallback(
@@ -371,6 +407,9 @@ export function useMailBlockState(): UseMailBlockState {
 		loadTemplate,
 		saveAsTemplate,
 		saveAsTemplateFromUI,
+		showTemplateSaveForm,
+		setShowTemplateSaveForm,
+		confirmSaveTemplate,
 		deleteTemplate,
 		addCustomBlock,
 		exportTemplate,

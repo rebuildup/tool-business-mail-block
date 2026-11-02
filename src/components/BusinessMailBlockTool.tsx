@@ -1,7 +1,6 @@
 "use client";
 
 import { DragDropContext } from "@hello-pangea/dnd";
-import ToolWrapper from "../../../../src/components/tools-ui/ToolWrapper";
 import AvailableBlocks from "./AvailableBlocks";
 import ComposedBlocks from "./ComposedBlocks";
 import Controls from "./Controls";
@@ -10,6 +9,8 @@ import EmailGuidelines from "./EmailGuidelines";
 import EmailValidation from "./EmailValidation";
 import GeneratedEmail from "./GeneratedEmail";
 import TemplateLibrary from "./TemplateLibrary";
+import TemplateSaveForm from "./TemplateSaveForm";
+import ToolFrame from "./ToolFrame";
 import { useMailBlockState } from "./useMailBlockState";
 import VariablesInput from "./VariablesInput";
 
@@ -17,7 +18,7 @@ export default function BusinessMailBlockTool() {
 	const state = useMailBlockState();
 
 	return (
-		<ToolWrapper
+		<ToolFrame
 			toolName="Business Mail Block Tool"
 			description="ビジネスメールをScratch風ブロックUIで簡単作成.挨拶、本文、締め、署名を組み合わせてプロフェッショナルなメールを作成.テンプレート機能とバリデーション機能付き."
 			category="Business"
@@ -67,9 +68,19 @@ export default function BusinessMailBlockTool() {
 								onClose={() => state.setShowCustomBlockForm(false)}
 							/>
 						)}
+
+						{state.showTemplateSaveForm && (
+							<TemplateSaveForm
+								onSave={state.confirmSaveTemplate}
+								onClose={() => state.setShowTemplateSaveForm(false)}
+							/>
+						)}
 					</div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div
+						className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+						style={{ display: "grid", gap: "2rem" }}
+					>
 						<AvailableBlocks
 							filteredBlocks={state.filteredBlocks}
 							toggleFavorite={state.toggleFavorite}
@@ -104,6 +115,6 @@ export default function BusinessMailBlockTool() {
 					/>
 				</div>
 			</DragDropContext>
-		</ToolWrapper>
+		</ToolFrame>
 	);
 }
