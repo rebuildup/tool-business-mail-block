@@ -4,10 +4,11 @@
 
 ## 1. プロジェクト境界
 
-- 役割: Next.js 16 ホストにマウントされる React 19 クライアントコンポーネント. 単独 deploy / 単独配信はしない.
+- 役割: React 19 クライアントコンポーネント. 2 つの公開経路を持つ (ADR 0003).
+  - **component library**: `import BusinessMailBlockApp from "@rebuildup/tool-business-mail-block";` 形式. 公開 entry は `src/index.ts` → `BusinessMailBlockApp`.
+  - **standalone SPA**: `bun run build` が `dist/` に静的配信可能な artifact を出力し, host (`my-web-2026`) が `/tools/business-mail-block/app/` 配下で配信する.
 - 埋め込み位置 (canonical): `<my-web-2025>/external/business-mail-block/`. 開発・検証はこのレイアウトを前提とする.
-- 配布 import: `import BusinessMailBlockApp from "@rebuildup/tool-business-mail-block";` 形式. 公開 entry は `src/index.ts` → `BusinessMailBlockApp`.
-- 共有 UI: `<my-web-2025>/external/ui/src/ToolWrapper` を相対 import で参照. 単独 checkout では解決不可なので、host checkout と組わせて検証する.
+- 共有 UI: shell はこの repo が所有する `src/components/ToolFrame.tsx`. host repository からは何も import しない (host 相対 import 禁止).
 
 ## 2. ツールチェーン
 
@@ -25,14 +26,24 @@
 bun install --frozen-lockfile
 bun run type-check          # tsc --noEmit
 bun run lint                # biome check .
+bun run build               # dist/ へ standalone artifact を出力
 ```
 
-UI 変更を含む場合は host (`my-web-2025`) の Playwright 経路で実描画を確認する. standalone checkout では `external/ui/src/ToolWrapper` の解決が必要なため、host checkout と組わせて初めて full gate が成立する.
+この gate は **standalone checkout で単独に成立する** (ADR 0003). host repository から
+何も import しないため、host checkout と組合わせる必要はない.
+
+UI 変更を含む場合は、`dist/` を `/tools/business-mail-block/app/` 配下に配信した
+sandbox iframe (`sandbox="allow-scripts"`, opaque origin) で実描画を確認する.
+host 側 route を前提にした link / dialog / storage を使っていないか確認する.
 
 ## 4. ディレクトリ責務
 
 - `src/index.ts` 公開 entry. `BusinessMailBlockApp` を default + named で再 export.
-- `src/BusinessMailBlockApp.tsx` ホスト `ToolWrapper` への薄い wrapper.
+- `src/BusinessMailBlockApp.tsx` `BusinessMailBlockTool` への薄い wrapper.
+- `src/main.tsx` standalone SPA の entry. 既存の最上位 component を `createRoot` で mount するだけ.
+- `src/styles.css` standalone 用の stylesheet. base reset (Tailwind v4 preflight 相当) + `space-y-*` + `sm:` / `lg:` media query のみ. 宣言可能な utility は各 component の inline `style` prop が担う (ADR 0003).
+- `index.html` standalone SPA の entry document. `#root` と `/src/main.tsx` のみ.
+- `vite.config.ts` `base: "./"` 必須 (サブパス配信のため).
 - `src/components/` 機能コンポーネント群. `BusinessMailBlockTool` がルート, `useMailBlockState` が状態 hook, `constants.ts` がブロック / テンプレートのシードデータ, `validation.ts` が pure な検証ロジック, `types.ts` がドメイン型.
 - `docs/adr/` 意思決定の記録. 本 init で整備.
 - `.tmp/` 検証アーティファクト置き場 (commit しない). `.reference/` 参照用外部 repo (commit しない).
@@ -83,7 +94,7 @@ disjoint file ownership を割り当て、各 subagent の完了作業は自分�
 
 ## 13. Fresh-clone 再現性
 
-fresh clone から `git submodule update --init --recursive && bun install --frozen-lockfile && bun run type-check && bun run lint` が host checkout 配下で green になる状態が ideal. 隠れた global npm / pip / dotenv への暗黙依存を持たない.
+fresh clone から `bun install --frozen-lockfile && bun run type-check && bun run lint && bun run build` が standalone checkout で green になる状態が ideal. 隠れた global npm / pip / dotenv への暗黙依存を持たない. host checkout との組み合わせは不要 (ADR 0003).
 
 ## 14. 既知の quality debt (2026-08 監査時点)
 

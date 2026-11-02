@@ -1,8 +1,14 @@
 # ADR 0001 — Tool embedding contract and standalone-dev limitation
 
 - **日付**: 2026-08-29
-- **ステータス**: Accepted
+- **ステータス**: Superseded (host 相対 import 部分のみ / ADR 0003)
 - **調査対象 capability**: 単独 repo として GitHub で配布しつつ, `my-web-2025` ホストに submodule として埋め込まれるツールコンポーネントの開発・検証.
+
+> **更新 (2026-11-02)**: 本 ADR の「host 相対 import を維持する」(選択肢 A) は
+> [ADR 0003](0003-standalone-vite-build-path.md) により部分的に置き換わった。
+> `ToolWrapper` への相対 import はこの repo が所有する `src/components/ToolFrame.tsx`
+> に置換され、standalone build 経路が追加された。残る埋め込み契約
+> (submodule 位置 / 公開 entry `src/index.ts` / 配布 import 形式) は変わらない。
 
 ## 解決したい問題
 
