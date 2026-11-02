@@ -112,6 +112,11 @@ export default function ComposedBlocks({
 											CATEGORY_COLORS[block.category]
 										} ${snapshot.isDragging ? "" : ""}`}
 										style={{
+											// Keep the lift geometry supplied by dnd
+											// (position / transform / top / left); replacing it
+											// with a plain style object stopped the card from
+											// lifting and the drop animation from completing.
+											...provided.draggableProps.style,
 											padding: "0.75rem",
 											borderRadius: "0.5rem",
 											transitionProperty:
